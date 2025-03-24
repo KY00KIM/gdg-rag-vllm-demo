@@ -7,10 +7,12 @@ CHUNK_PATH = "data/chunks.npy"
 EMBED_PATH = "data/embeddings.npy"
 INDEX_PATH = "data/index_flat.faiss"
 
+
 def bootstrap():
-# 1. Read input text
+    # 1. Read input text
     with open(INPUT_PATH, "r", encoding="utf-8") as f:
-        lines = [line.strip() for line in f if line.strip()]  # remove empty lines
+        lines = [line.strip()
+                 for line in f if line.strip()]  # remove empty lines
 
 # 2. Save text as ndarray(chunks)
     chunks = np.array(lines, dtype=object)
@@ -19,7 +21,8 @@ def bootstrap():
 
 # 3. Get embedding and save ndarray of texts
     model = SentenceTransformer("all-MiniLM-L6-v2")
-    embeddings = model.encode(chunks, convert_to_numpy=True, show_progress_bar=True)
+    embeddings = model.encode(
+        chunks, convert_to_numpy=True, show_progress_bar=True)
     np.save(EMBED_PATH, embeddings)
     print(f"Saved embeddings to {EMBED_PATH}")
 
@@ -31,13 +34,12 @@ def bootstrap():
     print(f"Saved FAISS index to {INDEX_PATH}")
 
 
-
 def test():
     chunks = np.load(CHUNK_PATH, allow_pickle=True)
     index = faiss.read_index(INDEX_PATH)
     model = SentenceTransformer("all-MiniLM-L6-v2")
 
-    print("RAG Search Ready. Type your query (or type 'exit' to quit):")
+    print("RAG Search Ready. Type your query (or type 'exit' to quit):", flush=True)
 
     while True:
         query = input("Query > ")
@@ -72,4 +74,3 @@ if __name__ == "__main__":
         test()
     else:
         print("Arg \'--type\' must be \'bootstrap\' or \'test\'")
-
