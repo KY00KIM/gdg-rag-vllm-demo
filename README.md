@@ -1,4 +1,4 @@
-# Demo
+# RAG Demo
 
 ### Requirement
 
@@ -17,7 +17,7 @@ docker build -f Dockerfile.cpu -t vllm-cpu-env --shm-size=4g .
 docker build -f Dockerfile.arm -t vllm-cpu-env --shm-size=4g .
 ```
 
-```bash
+```**bash**
 docker run -it \
              --rm \
              --network=host \
@@ -26,6 +26,9 @@ docker run -it \
 ```
 
 ### Retrieval Build & Run
+
+- Configure `data/input.txt` as knowledge base
+  - delim docs with `'\n'` newline character
 
 ```bash
 git clone https://github.com/KY00KIM/gdg-rag-vllm-demo
@@ -37,12 +40,32 @@ docker build -f Dockerfile -t retrieval:0.1 .
 docker run -it \
              --rm \
              -p 6000:6000 \
+             -v $(pwd)/data:/app/data \
              retrieval:0.1
+
+# Configure data/input.txt as Knowledge Base
+# Bootstrap(Embedding, Chunk, Index)
+python embed.py --type bootstrap
+
+# Test bootstrap output
+python embed.py --type test
+
 
 # Run retrieval server
 docker run -it \
              --rm \
+             # -d \ # Optional for daemon
              -p 6000:6000 \
+             -v $(pwd)/data:/app/data \
              retrieval:0.1 \
             python minimal_retrieval.py
+```
+
+### Run RAG Chat Client
+
+```bash
+pip install openai requests
+
+# Configure URL, PORT in clent.py
+python client.py
 ```
