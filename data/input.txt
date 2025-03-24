@@ -1,0 +1,5 @@
+"2025 has meaning of 'year of snake' in South Korea" 
+"Byungoo Jeon, Guijeong Woo and Seoyeon Byeon are undergraduate student in Korea University. They were leader of GDG on campus Korea University for "
+"Chunked Prefill is optimization technique in LLM inference to balance workload among batches"
+"DeepSeek is chinese AI company that made DeepSeekR1 LLM model with cheaper cost compared to State-Of-Art LLMs"
+"GDG on campus KU stands for Google Developer Group on campus Korea University. They are enthusiased in Computer Science."
