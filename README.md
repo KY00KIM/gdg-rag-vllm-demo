@@ -40,23 +40,27 @@ docker build -f Dockerfile -t retrieval:0.1 .
 docker run -it \
              --rm \
              -p 6000:6000 \
-             -v $(pwd)/data:/app/data \
+             -v "$(pwd)/data:/app/data" \
              retrieval:0.1
 
 # Configure data/input.txt as Knowledge Base
+```
+```bash
+# Inside container shell,
 # Bootstrap(Embedding, Chunk, Index)
 python embed.py --type bootstrap
 
 # Test bootstrap output
 python embed.py --type test
-
-
+# Exit container
+```
+```bash
 # Run retrieval server
 docker run -it \
              --rm \
              # -d \ # Optional for daemon
              -p 6000:6000 \
-             -v $(pwd)/data:/app/data \
+             -v "$(pwd)/data:/app/data" \
              retrieval:0.1 \
             python minimal_retrieval.py
 ```
