@@ -70,7 +70,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.type == "bootstrap":
         bootstrap()
-    elif args.type == "text":
+    elif args.type == "test":
         test()
     else:
         print("Arg \'--type\' must be \'bootstrap\' or \'test\'")
