@@ -4,7 +4,7 @@
 
 - `docker`
 
-### vLLM Build & Run
+## 1. vLLM Build & Run
 
 ```bash
 git clone https://github.com/vllm-project/vllm
@@ -18,14 +18,11 @@ docker build -f Dockerfile.arm -t vllm-cpu-env --shm-size=4g .
 ```
 
 ```**bash**
-docker run -it \
-             --rm \
-             --network=host \
-             vllm-cpu-env \
-             --model "TinyLlama/TinyLlama-1.1B-Chat-v1.0" # "facebook/opt-125m"
+docker run -it --rm --network=host vllm-cpu-env  --model "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+# "facebook/opt-125m"
 ```
 
-### Retrieval Build & Run
+## 2. Retrieval Build & Run
 
 - Configure `data/input.txt` as knowledge base
   - delim docs with `'\n'` newline character
@@ -37,14 +34,11 @@ docker build -f Dockerfile -t retrieval:0.1 .
 ```
 
 ```bash
-docker run -it \
-             --rm \
-             -p 6000:6000 \
-             -v "$(pwd)/data:/app/data" \
-             retrieval:0.1
+docker run -it  --rm  -p 6000:6000  -v "$(pwd)/data:/app/data"  retrieval:0.1
 
 # Configure data/input.txt as Knowledge Base
 ```
+
 ```bash
 # Inside container shell,
 # Bootstrap(Embedding, Chunk, Index)
@@ -54,22 +48,23 @@ python embed.py --type bootstrap
 python embed.py --type test
 # Exit container
 ```
+
 ```bash
 # Run retrieval server
-docker run -it \
-             --rm \
-             # -d \ # Optional for daemon
-             -p 6000:6000 \
-             -v "$(pwd)/data:/app/data" \
-             retrieval:0.1 \
-            python minimal_retrieval.py
+# -d # Optional for daemon
+docker run -it --rm -p 6000:6000 -v "$(pwd)/data:/app/data" retrieval:0.1  python minimal_retrieval.py
 ```
 
-### Run RAG Chat Client
+## 3. Run RAG Chat Client
 
 ```bash
+# By Local
 pip install openai requests
-
-# Configure URL, PORT in clent.py
 python client.py
+
+# By Container
+docker run -it --rm --network=host -v "$(pwd)/data:/app/data" retrieval:0.1  python client.py
+
+# If update client.py
+docker cp "$(pwd)/client.py" $CONTAINER_ID:/app
 ```
