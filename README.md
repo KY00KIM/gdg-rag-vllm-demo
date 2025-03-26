@@ -18,8 +18,11 @@ docker build -f Dockerfile.arm -t vllm-cpu-env --shm-size=4g .
 ```
 
 ```**bash**
-docker run -it --rm --network=host vllm-cpu-env  --model "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-# "facebook/opt-125m"
+# x86
+docker run -it --rm -p 8000:8000 vllm-cpu-env  --model "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+
+# MacOS /Apple Sillicon
+docker run -it --rm -p 8000:8000 vllm-cpu-env  --model "TinyLlama/TinyLlama-1.1B-Chat-v1.0" --dtype float16
 ```
 
 ## 2. Retrieval Build & Run
